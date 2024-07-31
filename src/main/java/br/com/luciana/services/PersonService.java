@@ -60,7 +60,6 @@ public class PersonService {
 		vo.add(linkTo(methodOn(PersonController.class).findById(vo.getKey())).withSelfRel());
 		return vo;
 	}
-	
 	public PersonVOv2 createV2(PersonVOv2 person) {
 		logger.info("Creating a person with V2!");					// imprime no console
 		var entity = mapper.convertVoToEntity(person);
