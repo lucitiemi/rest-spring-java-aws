@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.luciana.services.PersonService;
 import br.com.luciana.vo.v1.PersonVO;
+import br.com.luciana.vo.v2.PersonVOv2;
 
 @RestController
 @RequestMapping("/person")
@@ -38,6 +39,11 @@ public class PersonController {
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public PersonVO create(@RequestBody PersonVO person) {
 		return service.create(person);
+	}
+	
+	@PostMapping(value = "/v2", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public PersonVOv2 createV2(@RequestBody PersonVOv2 person) {
+		return service.createV2(person);
 	}
 	
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
