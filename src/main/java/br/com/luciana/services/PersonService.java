@@ -9,6 +9,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.springframework.stereotype.Service;
 
 import br.com.luciana.controllers.PersonController;
+import br.com.luciana.exceptions.RequiredObjectIsNullException;
 import br.com.luciana.exceptions.ResourceNotFoundException;
 import br.com.luciana.mapper.DozerMapper;
 import br.com.luciana.mapper.custom.PersonMapper;
@@ -50,6 +51,9 @@ public class PersonService {
 	
 	// CRIA
 	public PersonVO create(PersonVO person) {
+		
+		if (person == null) throw new RequiredObjectIsNullException();
+		
 		logger.info("Creating a person!");					// imprime no console
 		var entity = DozerMapper.parseObject(person, Person.class);
 		var vo = DozerMapper.parseObject(repository.save(entity),PersonVO.class);
@@ -67,6 +71,9 @@ public class PersonService {
 	
 	// ATUALIZA
 	public PersonVO update(PersonVO person) {
+		
+		if (person == null) throw new RequiredObjectIsNullException();
+		
 		logger.info("Updating a person!");					// imprime no console
 		var entity = repository.findById(person.getKey()).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
 
