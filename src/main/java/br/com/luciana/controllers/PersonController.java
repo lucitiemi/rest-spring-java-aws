@@ -20,7 +20,7 @@ import br.com.luciana.vo.v1.PersonVO;
 import br.com.luciana.vo.v2.PersonVOv2;
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping("/api/person/v1")
 public class PersonController {
 
 	@Autowired
