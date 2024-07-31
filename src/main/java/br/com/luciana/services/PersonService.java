@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.luciana.exceptions.ResourceNotFoundException;
+import br.com.luciana.mapper.DozerMapper;
 import br.com.luciana.model.Person;
 import br.com.luciana.repositories.PersonRepository;
+import br.com.luciana.vo.v1.PersonVO;
 
 @Service
 public class PersonService {
@@ -20,27 +22,30 @@ public class PersonService {
 	
 	
 	// BUSCA TODOS
-	public List<Person> findAll() {
+	public List<PersonVO> findAll() {
 		logger.info("Finding all people!");		// imprime no console
-		return repository.findAll();
+		return DozerMapper.parseListObjects(repository.findAll(), PersonVO.class) ;
 	}
 
 	
 	// BUSCA POR ID
-	public Person findById(Long id) {
+	public PersonVO findById(Long id) {
 		logger.info("Finding on person!");		// imprime no console
-		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+		var entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+		return DozerMapper.parseObject(entity, PersonVO.class);
 	}
 	
 	
 	// CRIA
-	public Person create(Person person) {
+	public PersonVO create(PersonVO person) {
 		logger.info("Creating a person!");		// imprime no console
-		return repository.save(person);
+		var entity = DozerMapper.parseObject(person, Person.class);
+		var vo = DozerMapper.parseObject(repository.save(entity),PersonVO.class);
+		return vo;
 	}
 	
 	// ATUALIZA
-	public Person update(Person person) {
+	public PersonVO update(PersonVO person) {
 		logger.info("Updating a person!");		// imprime no console
 		var entity = repository.findById(person.getId()).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
 
@@ -49,7 +54,8 @@ public class PersonService {
 		entity.setAdress(person.getAdress());
 		entity.setGender(person.getGender());
 		
-		return repository.save(entity);
+		var vo = DozerMapper.parseObject(repository.save(entity),PersonVO.class);
+		return vo;
 	}
 	
 	// DELETA
